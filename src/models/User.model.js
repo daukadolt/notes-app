@@ -8,7 +8,7 @@ export const init = (sequelize) => {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
-            type: DataTypes.NUMBER,
+            type: DataTypes.INTEGER,
         },
         username: {
             allowNull: false,

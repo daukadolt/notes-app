@@ -3,6 +3,8 @@ import { Sequelize } from 'sequelize';
 import app from './App';
 import Config from './Config';
 
+import { init as initUserModel } from './models/User.model';
+
 const db = new Sequelize(
     Config.DB_NAME,
     Config.DB_USERNAME,
@@ -13,6 +15,8 @@ const db = new Sequelize(
 );
 
 const initModels = async () => {
+    initUserModel(db);
+
     await db.sync({ force: true, alter: true });
 };
 
