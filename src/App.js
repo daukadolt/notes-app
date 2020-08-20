@@ -3,6 +3,9 @@ import express from 'express';
 import UserController from './controllers/UserController';
 
 const app = express();
+
+app.use(express.json());
+
 const rootRouter = express.Router();
 
 rootRouter.get('/', (req, res) => {
