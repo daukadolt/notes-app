@@ -1,0 +1,10 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:alpine
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: 'supersecret'
+      POSTGRES_DB: 'notes-app'
+    ports:
+    - '127.0.0.1:5432:5432'
