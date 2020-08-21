@@ -1,6 +1,6 @@
 import express from 'express';
 
-import UserController from './controllers/UserController';
+import UserController from './controllers/UsersController';
 import AuthController from './controllers/AuthController';
 
 const app = express();
