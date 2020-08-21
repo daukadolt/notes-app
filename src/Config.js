@@ -6,4 +6,6 @@ export default class Config {
     static DB_PASSWORD = 'supersecret';
     static DB_NAME = 'notes-app';
     static EXPRESS_PORT = 8080;
+    static BCRYPT_SALT = 10;
+    static JWT_SECRET = 'super-secret-secret';
 }

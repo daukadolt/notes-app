@@ -1,5 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
-import bcrypt from 'bcrypt';
+
+import utils from '../utils';
+import Note from './Note.model';
 
 export default class User extends Model {}
 
@@ -26,7 +28,9 @@ export const init = (sequelize) => {
     }, { sequelize });
 
     User.addHook('beforeCreate', async (user) => {
-        const hashedPassword = await bcrypt.hash(user.getDataValue('password'), 10);
+        const hashedPassword = await utils.getPasswordHash(user.getDataValue('password'));
         user.setDataValue('password', hashedPassword);
     });
+
+    User.hasMany(Note);
 };

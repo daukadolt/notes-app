@@ -1,6 +1,7 @@
 import express from 'express';
 
 import UserController from './controllers/UserController';
+import AuthController from './controllers/AuthController';
 
 const app = express();
 
@@ -13,6 +14,7 @@ rootRouter.get('/', (req, res) => {
 });
 
 rootRouter.use('/users', UserController);
+rootRouter.use('/auth', AuthController);
 
 app.use('/api', rootRouter);
 

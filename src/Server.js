@@ -4,6 +4,7 @@ import app from './App';
 import Config from './Config';
 
 import { init as initUserModel } from './models/User.model';
+import { init as initNoteModel } from './models/Note.model';
 
 const db = new Sequelize(
     Config.DB_NAME,
@@ -15,6 +16,7 @@ const db = new Sequelize(
 );
 
 const initModels = async () => {
+    initNoteModel(db);
     initUserModel(db);
 
     await db.sync({ force: true, alter: true });
