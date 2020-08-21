@@ -13,9 +13,9 @@ router.post('/', async (req, res) => {
     try {
         await newUser.validate();
         await newUser.save();
-    } catch (error) {
-        console.error(error.stack);
-        return res.status(400).send(error.message);
+    } catch (err) {
+        console.error(err.stack);
+        return res.status(400).send(err.message);
     }
 
     return res.sendStatus(200);
