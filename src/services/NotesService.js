@@ -58,9 +58,21 @@ const setText = async (noteId, author, text) => {
     await note.save();
 };
 
+const deleteNoteById = async (author, id) => {
+    const { id: UserId } = author;
+
+    return await Note.destroy({
+        where: {
+            UserId,
+            id,
+        },
+    });
+};
+
 export default {
     getAllNoteIdsByAuthor,
     getNoteByAuthorAndId,
     createNewNote,
     setText,
+    deleteNoteById,
 };

@@ -60,4 +60,20 @@ router.put('/:id', getUserByToken, async (req, res) => {
     res.sendStatus(200);
 });
 
+router.delete('/:id', getUserByToken, async (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+        return res.sendStatus(400);
+    }
+
+    const deleteCount = await NotesService.deleteNoteById(req.user, id);
+
+    if (deleteCount === 0) {
+        return res.sendStatus(404);
+    }
+
+    res.sendStatus(200);
+});
+
 export default router;
