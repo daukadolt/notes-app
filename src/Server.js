@@ -3,8 +3,7 @@ import { Sequelize } from 'sequelize';
 import app from './App';
 import Config from './Config';
 
-import { init as initUserModel } from './models/User.model';
-import { init as initNoteModel } from './models/Note.model';
+import initModels from './models/init';
 
 const db = new Sequelize(
     Config.DB_NAME,
@@ -15,17 +14,11 @@ const db = new Sequelize(
     },
 );
 
-const initModels = async () => {
-    initNoteModel(db);
-    initUserModel(db);
-
-    await db.sync({ force: true, alter: true });
-};
 
 const start = async () => {
     try {
         await db.authenticate();
-        await initModels();
+        await initModels(db);
         app.listen(Config.EXPRESS_PORT, () => {
             console.log(`App running on http://localhost:${Config.EXPRESS_PORT}`);
         });

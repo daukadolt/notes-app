@@ -2,6 +2,7 @@ import express from 'express';
 
 import UserController from './controllers/UsersController';
 import AuthController from './controllers/AuthController';
+import NotesController from './controllers/NotesController';
 
 const app = express();
 
@@ -15,6 +16,7 @@ rootRouter.get('/', (req, res) => {
 
 rootRouter.use('/users', UserController);
 rootRouter.use('/auth', AuthController);
+rootRouter.use('/notes', NotesController);
 
 app.use('/api', rootRouter);
 

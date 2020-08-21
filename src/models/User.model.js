@@ -1,7 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 
 import utils from '../utils';
-import Note from './Note.model';
 
 export default class User extends Model {}
 
@@ -9,9 +8,9 @@ export const init = (sequelize) => {
     User.init({
         id: {
             allowNull: false,
-            autoIncrement: true,
             primaryKey: true,
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
         },
         username: {
             allowNull: false,
@@ -31,6 +30,4 @@ export const init = (sequelize) => {
         const hashedPassword = await utils.getPasswordHash(user.getDataValue('password'));
         user.setDataValue('password', hashedPassword);
     });
-
-    User.hasMany(Note);
 };
