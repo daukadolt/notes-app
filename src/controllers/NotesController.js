@@ -17,7 +17,11 @@ router.get('/:id', getUserByToken, async (req, res) => {
         return res.sendStatus(400);
     }
 
-    const note = await NotesService.getNoteById(id);
+    const note = await NotesService.getNoteByAuthorAndId(req.user, id);
+
+    if (!note) {
+        return res.sendStatus(403);
+    }
 
     res.json(note);
 });
@@ -49,7 +53,7 @@ router.put('/:id', getUserByToken, async (req, res) => {
     try {
         await NotesService.setText(noteId, req.user, text);
     } catch (err) {
-        if (err instanceof Errors.NonexistentNote) return res.sendStatus(401);
+        if (err instanceof Errors.NonexistentNoteError) return res.sendStatus(401);
         return res.sendStatus(500);
     }
 

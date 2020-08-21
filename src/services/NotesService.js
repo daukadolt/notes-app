@@ -1,9 +1,9 @@
 import Note from '../models/Note.model';
 
-class NonexistentNote extends Error {}
+class NonexistentNoteError extends Error {}
 
 export const Errors = {
-    NonexistentNote,
+    NonexistentNoteError,
 }
 
 const getAllNoteIdsByAuthor = async (author) => {
@@ -16,9 +16,14 @@ const getAllNoteIdsByAuthor = async (author) => {
         .map((note) => note.id);
 };
 
-const getNoteById = async (id) => {
+const getNoteByAuthorAndId = async (author, id) => {
+    const { id: UserId } = author;
+
     return Note.findOne({
-        where: { id }
+        where: {
+            UserId,
+            id,
+        }
     });
 };
 
@@ -45,7 +50,7 @@ const setText = async (noteId, author, text) => {
     });
 
     if (!note) {
-        throw new NonexistentNote();
+        throw new NonexistentNoteError();
     }
 
     note.text = text;
@@ -55,7 +60,7 @@ const setText = async (noteId, author, text) => {
 
 export default {
     getAllNoteIdsByAuthor,
-    getNoteById,
+    getNoteByAuthorAndId,
     createNewNote,
     setText,
 };
