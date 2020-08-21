@@ -6,6 +6,22 @@ export const Errors = {
     NonexistentNote,
 }
 
+const getAllNoteIdsByAuthor = async (author) => {
+    const { id: UserId } = author;
+
+    return (await Note.findAll({
+        where: { UserId },
+        attributes: ['id']
+    }))
+        .map((note) => note.id);
+};
+
+const getNoteById = async (id) => {
+    return Note.findOne({
+        where: { id }
+    });
+};
+
 const createNewNote = async (author, text) => {
     const { id: UserId } = author;
 
@@ -38,6 +54,8 @@ const setText = async (noteId, author, text) => {
 };
 
 export default {
+    getAllNoteIdsByAuthor,
+    getNoteById,
     createNewNote,
     setText,
 };

@@ -5,6 +5,23 @@ import NotesService, { Errors } from '../services/NotesService';
 
 const router = express.Router();
 
+router.get('/', getUserByToken, async (req, res) => {
+    const notes = await NotesService.getAllNoteIdsByAuthor(req.user);
+    res.json(notes);
+});
+
+router.get('/:id', getUserByToken, async (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+        return res.sendStatus(400);
+    }
+
+    const note = await NotesService.getNoteById(id);
+
+    res.json(note);
+});
+
 router.post('/', getUserByToken, async (req, res) => {
     const { text } = req.body;
 
