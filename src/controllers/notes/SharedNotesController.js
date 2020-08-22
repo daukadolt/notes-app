@@ -1,19 +1,25 @@
 import express from 'express';
 
-import SharedIDService from '../../services/Note/SharedIDService';
+import SharedIDService, { Errors } from '../../services/Note/SharedIDService';
 
 const router = express.Router();
 
 router.get('/:id', async (req, res) => {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    if (!id) {
-        return res.sendStatus(400);
+        if (!id) {
+            return res.sendStatus(400);
+        }
+
+        const text = await SharedIDService.getNoteTextBySharedID(id);
+
+        res.send(text);
+    } catch (err) {
+        console.error(err.stack);
+        if (err instanceof Errors.NonexistentSharedIDError) return res.sendStatus(404);
+        res.status(500).send(err.message);
     }
-
-    const text = await SharedIDService.getNoteTextBySharedID(id);
-
-    res.send(text);
 });
 
 export default router;
