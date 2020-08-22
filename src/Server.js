@@ -1,24 +1,13 @@
-import { Sequelize } from 'sequelize';
-
 import app from './App';
 import Config from './Config';
 
+import sequelize from './db/Sequelize';
 import initModels from './models/init';
-
-const db = new Sequelize(
-    Config.DB_NAME,
-    Config.DB_USERNAME,
-    Config.DB_PASSWORD, {
-        host: Config.DB_HOST,
-        dialect: 'postgres',
-    },
-);
-
 
 const start = async () => {
     try {
-        await db.authenticate();
-        await initModels(db);
+        await sequelize.authenticate();
+        await initModels(sequelize);
         app.listen(Config.EXPRESS_PORT, () => {
             console.log(`App running on http://localhost:${Config.EXPRESS_PORT}`);
         });
