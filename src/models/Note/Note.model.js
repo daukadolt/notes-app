@@ -12,7 +12,7 @@ export const init = (sequelize) => {
         },
         text: {
             allowNull: false,
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
         },
     }, { sequelize });
 };

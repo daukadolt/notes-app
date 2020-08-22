@@ -41,6 +41,7 @@ router.post('/', getUserByToken, async (req, res) => {
     try {
         await NotesService.createNewNote(req.user, text);
     } catch (err) {
+        console.error(err.stack);
         return res.sendStatus(500);
     }
 
