@@ -5,12 +5,14 @@ import UserService from '../services/UserService';
 const getUserByToken = async (req, res, next) => {
     const bearerHeader = req.headers.authorization;
     if (!bearerHeader) {
-        return res.sendStatus(403);
+        res.sendStatus(403);
+        return;
     }
     const [, bearerToken] = bearerHeader.split(' ');
 
     if (!bearerToken) {
-        return res.sendStatus(403);
+        res.sendStatus(403);
+        return;
     }
 
     let user;
@@ -21,18 +23,20 @@ const getUserByToken = async (req, res, next) => {
         dateOfExpiry.setUTCSeconds(exp);
         const now = new Date();
         if (dateOfExpiry < now) {
-            return res.sendStatus(403);
+            res.sendStatus(403);
+            return;
         }
 
         user = await UserService.getUserByUsername(username);
 
         if (!user) {
-            return res.sendStatus(403);
+            res.sendStatus(403);
+            return;
         }
-
     } catch (err) {
         console.error(err.stack);
-        return res.sendStatus(400);
+        res.sendStatus(400);
+        return;
     }
 
     req.jwtToken = bearerToken;

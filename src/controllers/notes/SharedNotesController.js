@@ -9,7 +9,8 @@ router.get('/:id', async (req, res) => {
         const { id } = req.params;
 
         if (!id) {
-            return res.sendStatus(400);
+            res.sendStatus(400);
+            return;
         }
 
         const text = await SharedIDService.getNoteTextBySharedID(id);
@@ -17,8 +18,8 @@ router.get('/:id', async (req, res) => {
         res.send(text);
     } catch (err) {
         console.error(err.stack);
-        if (err instanceof Errors.NonexistentSharedIDError) return res.sendStatus(404);
-        res.status(500).send(err.message);
+        if (err instanceof Errors.NonexistentSharedIDError) res.sendStatus(404);
+        else res.status(500).send(err.message);
     }
 });
 

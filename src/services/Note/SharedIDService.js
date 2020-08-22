@@ -7,10 +7,9 @@ export const Errors = {
     NonexistentSharedIDError,
 };
 
-
 const createNoteSharedID = async (noteId) => {
     const newSharedID = SharedID.build({
-        NoteId: noteId
+        NoteId: noteId,
     });
 
     await newSharedID.validate();
@@ -22,8 +21,8 @@ const createNoteSharedID = async (noteId) => {
 const getNoteTextBySharedID = async (id) => {
     const sharedIDRecord = await SharedID.findOne({
         where: {
-            id
-        }
+            id,
+        },
     });
 
     if (!sharedIDRecord) {

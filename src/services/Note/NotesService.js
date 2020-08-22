@@ -5,14 +5,14 @@ class NonexistentNoteError extends Error {}
 
 export const Errors = {
     NonexistentNoteError,
-}
+};
 
 const getAllNoteIdsByAuthor = async (author) => {
     const { id: UserId } = author;
 
     return (await Note.findAll({
         where: { UserId },
-        attributes: ['id']
+        attributes: ['id'],
     }))
         .map((note) => note.id);
 };
@@ -24,7 +24,8 @@ const getNoteByAuthorAndId = async (author, id) => {
         where: {
             UserId,
             id,
-        }, include: [{
+        },
+        include: [{
             model: SharedID,
             attributes: ['id'],
         }],
@@ -65,7 +66,7 @@ const setText = async (noteId, author, text) => {
 const deleteNoteById = async (author, id) => {
     const { id: UserId } = author;
 
-    return await Note.destroy({
+    return Note.destroy({
         where: {
             UserId,
             id,

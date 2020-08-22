@@ -11,9 +11,7 @@ const router = express.Router();
 router.use('/shared', SharedNotesController);
 
 class HelperFunctions {
-    static flattenNestedSharedIDs = (SharedIDs) => {
-        return SharedIDs.map(({ id }) => id);
-    };
+    static flattenNestedSharedIDs = (SharedIDs) => SharedIDs.map(({ id }) => id);
 }
 
 router.get('/', authenticate, async (req, res) => {
@@ -25,13 +23,15 @@ router.get('/:id', authenticate, async (req, res) => {
     const { id } = req.params;
 
     if (!id) {
-        return res.sendStatus(400);
+        res.sendStatus(400);
+        return;
     }
 
     const note = await NotesService.getNoteByAuthorAndId(req.user, id);
 
     if (!note) {
-        return res.sendStatus(403);
+        res.sendStatus(403);
+        return;
     }
 
     note.SharedIDs = HelperFunctions.flattenNestedSharedIDs(note.SharedIDs);
@@ -43,14 +43,16 @@ router.post('/', authenticate, async (req, res) => {
     const { text } = req.body;
 
     if (!text) {
-        return res.sendStatus(400);
+        res.sendStatus(400);
+        return;
     }
 
     try {
         await NotesService.createNewNote(req.user, text);
     } catch (err) {
         console.error(err.stack);
-        return res.sendStatus(500);
+        res.sendStatus(500);
+        return;
     }
 
     res.sendStatus(200);
@@ -60,7 +62,8 @@ router.post('/:id/share', authenticate, async (req, res) => {
     const { id: noteId } = req.params;
 
     if (!noteId) {
-        return res.sendStatus(400);
+        res.sendStatus(400);
+        return;
     }
 
     try {
@@ -77,14 +80,16 @@ router.put('/:id', authenticate, async (req, res) => {
     const { id: noteId } = req.params;
 
     if (!text) {
-        return res.sendStatus(400);
+        res.sendStatus(400);
+        return;
     }
 
     try {
         await NotesService.setText(noteId, req.user, text);
     } catch (err) {
-        if (err instanceof Errors.NonexistentNoteError) return res.sendStatus(401);
-        return res.sendStatus(500);
+        if (err instanceof Errors.NonexistentNoteError) res.sendStatus(401);
+        else res.sendStatus(500);
+        return;
     }
 
     res.sendStatus(200);
@@ -94,13 +99,15 @@ router.delete('/:id', authenticate, async (req, res) => {
     const { id } = req.params;
 
     if (!id) {
-        return res.sendStatus(400);
+        res.sendStatus(400);
+        return;
     }
 
     const deleteCount = await NotesService.deleteNoteById(req.user, id);
 
     if (deleteCount === 0) {
-        return res.sendStatus(404);
+        res.sendStatus(404);
+        return;
     }
 
     res.sendStatus(200);

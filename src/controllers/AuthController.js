@@ -10,9 +10,7 @@ import authenticate from '../middlewares/authenticate';
 import Config from '../Config';
 
 class HelperFunctions {
-    static passwordIsValid = async (password, hash) => {
-        return bcrypt.compare(password, hash);
-    };
+    static passwordIsValid = async (password, hash) => bcrypt.compare(password, hash);
 }
 
 const router = express.Router();
@@ -20,24 +18,27 @@ const router = express.Router();
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
-        return res.sendStatus(400);
+        res.sendStatus(400);
+        return;
     }
 
     const user = await UserService.getUserByUsername(username);
 
     if (!user) {
-        return res.sendStatus(404);
+        res.sendStatus(404);
+        return;
     }
 
     const passwordValid = await HelperFunctions.passwordIsValid(password, user.getDataValue('password'));
 
     if (!passwordValid) {
-        return res.sendStatus(400);
+        res.sendStatus(400);
+        return;
     }
 
     const token = jwt.sign({
         username,
-    }, Config.JWT_SECRET, {expiresIn: '1h'});
+    }, Config.JWT_SECRET, { expiresIn: '1h' });
 
     res.json(token);
 });
@@ -47,7 +48,8 @@ router.post('/logout', authenticate, async (req, res) => {
         await AuthService.logoutJWT(req.jwtToken);
     } catch (err) {
         console.error(err.stack);
-        return res.status(500).send(err.message);
+        res.status(500).send(err.message);
+        return;
     }
     res.sendStatus(200);
 });

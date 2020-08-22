@@ -12,11 +12,10 @@ const logoutJWT = async (jwtToken) => {
 
     if (now > dateOfExpiry) return;
 
-    const secondsLeft = Math.ceil( (dateOfExpiry.getTime() - now.getTime()) / 1000 );
+    const secondsLeft = Math.ceil((dateOfExpiry.getTime() - now.getTime()) / 1000);
 
     await redisConnection.set(jwtToken, 'X', 'NX', 'EX', secondsLeft);
 };
-
 
 export default {
     logoutJWT,
