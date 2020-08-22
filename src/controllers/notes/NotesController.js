@@ -1,9 +1,14 @@
 import express from 'express';
 
-import getUserByToken from '../middlewares/getUserByToken';
-import NotesService, { Errors } from '../services/NotesService';
+import getUserByToken from '../../middlewares/getUserByToken';
+import NotesService, { Errors } from '../../services/Note/NotesService';
+import SharedIDService from '../../services/Note/SharedIDService';
+
+import SharedNotesController from './SharedNotesController';
 
 const router = express.Router();
+
+router.use('/shared', SharedNotesController);
 
 router.get('/', getUserByToken, async (req, res) => {
     const notes = await NotesService.getAllNoteIdsByAuthor(req.user);
@@ -40,6 +45,22 @@ router.post('/', getUserByToken, async (req, res) => {
     }
 
     res.sendStatus(200);
+});
+
+router.post('/:id/share', getUserByToken, async (req, res) => {
+    const { id: noteId } = req.params;
+
+    if (!noteId) {
+        return res.sendStatus(400);
+    }
+
+    try {
+        const sharedId = await SharedIDService.createNoteSharedID(noteId);
+        res.send(sharedId);
+    } catch (err) {
+        console.error(err.stack);
+        res.status(500).send(err.message);
+    }
 });
 
 router.put('/:id', getUserByToken, async (req, res) => {

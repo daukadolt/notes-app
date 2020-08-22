@@ -2,7 +2,7 @@ import express from 'express';
 
 import UserController from './controllers/UsersController';
 import AuthController from './controllers/AuthController';
-import NotesController from './controllers/NotesController';
+import NotesController from './controllers/notes/NotesController';
 
 const app = express();
 
