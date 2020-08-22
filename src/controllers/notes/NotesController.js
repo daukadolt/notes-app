@@ -47,15 +47,17 @@ router.post('/', authenticate, async (req, res) => {
         return;
     }
 
+    let note;
+
     try {
-        await NotesService.createNewNote(req.user, text);
+        note = await NotesService.createNewNote(req.user, text);
     } catch (err) {
         console.error(err.stack);
         res.sendStatus(500);
         return;
     }
 
-    res.sendStatus(200);
+    res.json(note);
 });
 
 router.post('/:id/share', authenticate, async (req, res) => {

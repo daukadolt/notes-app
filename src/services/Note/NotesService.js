@@ -42,6 +42,8 @@ const createNewNote = async (author, text) => {
 
     await newNote.validate();
     await newNote.save();
+
+    return newNote.toJSON();
 };
 
 const setText = async (noteId, author, text) => {
