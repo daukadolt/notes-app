@@ -35,6 +35,7 @@ const getUserByToken = async (req, res, next) => {
         return res.sendStatus(400);
     }
 
+    req.jwtToken = bearerToken;
     req.user = user;
 
     next();

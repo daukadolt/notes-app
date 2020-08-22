@@ -1,6 +1,6 @@
 import express from 'express';
 
-import getUserByToken from '../../middlewares/getUserByToken';
+import authenticate from '../../middlewares/authenticate';
 import NotesService, { Errors } from '../../services/Note/NotesService';
 import SharedIDService from '../../services/Note/SharedIDService';
 
@@ -16,12 +16,12 @@ class HelperFunctions {
     };
 }
 
-router.get('/', getUserByToken, async (req, res) => {
+router.get('/', authenticate, async (req, res) => {
     const notes = await NotesService.getAllNoteIdsByAuthor(req.user);
     res.json(notes);
 });
 
-router.get('/:id', getUserByToken, async (req, res) => {
+router.get('/:id', authenticate, async (req, res) => {
     const { id } = req.params;
 
     if (!id) {
@@ -39,7 +39,7 @@ router.get('/:id', getUserByToken, async (req, res) => {
     res.json(note);
 });
 
-router.post('/', getUserByToken, async (req, res) => {
+router.post('/', authenticate, async (req, res) => {
     const { text } = req.body;
 
     if (!text) {
@@ -56,7 +56,7 @@ router.post('/', getUserByToken, async (req, res) => {
     res.sendStatus(200);
 });
 
-router.post('/:id/share', getUserByToken, async (req, res) => {
+router.post('/:id/share', authenticate, async (req, res) => {
     const { id: noteId } = req.params;
 
     if (!noteId) {
@@ -72,7 +72,7 @@ router.post('/:id/share', getUserByToken, async (req, res) => {
     }
 });
 
-router.put('/:id', getUserByToken, async (req, res) => {
+router.put('/:id', authenticate, async (req, res) => {
     const { text } = req.body;
     const { id: noteId } = req.params;
 
@@ -90,7 +90,7 @@ router.put('/:id', getUserByToken, async (req, res) => {
     res.sendStatus(200);
 });
 
-router.delete('/:id', getUserByToken, async (req, res) => {
+router.delete('/:id', authenticate, async (req, res) => {
     const { id } = req.params;
 
     if (!id) {

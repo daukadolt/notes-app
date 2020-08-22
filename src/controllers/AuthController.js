@@ -3,6 +3,10 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import UserService from '../services/UserService';
+import AuthService from '../services/AuthService';
+
+import authenticate from '../middlewares/authenticate';
+
 import Config from '../Config';
 
 class HelperFunctions {
@@ -36,6 +40,16 @@ router.post('/login', async (req, res) => {
     }, Config.JWT_SECRET, {expiresIn: '1h'});
 
     res.json(token);
+});
+
+router.post('/logout', authenticate, async (req, res) => {
+    try {
+        await AuthService.logoutJWT(req.jwtToken);
+    } catch (err) {
+        console.error(err.stack);
+        return res.status(500).send(err.message);
+    }
+    res.sendStatus(200);
 });
 
 export default router;
