@@ -8,4 +8,6 @@ export default class Config {
     static EXPRESS_PORT = 8080;
     static BCRYPT_SALT = 10;
     static JWT_SECRET = 'super-secret-secret';
+    static REDIS_HOST = 'localhost';
+    static REDIS_PORT = 6379;
 }
