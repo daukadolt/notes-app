@@ -7,10 +7,10 @@ export default async (db) => {
     initSharedNoteIDModel(db);
     initUserModel(db);
 
-    Note.hasMany(SharedNoteID);
+    Note.hasMany(SharedNoteID, { onDelete: 'CASCADE' });
     SharedNoteID.belongsTo(Note);
 
-    User.hasMany(Note);
+    User.hasMany(Note, { onDelete: 'CASCADE' });
     Note.belongsTo(User);
 
     await db.sync({ force: true, alter: true });
