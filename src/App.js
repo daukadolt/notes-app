@@ -1,6 +1,5 @@
 import express from 'express';
 
-import UserController from './controllers/UsersController';
 import AuthController from './controllers/AuthController';
 import NotesController from './controllers/notes/NotesController';
 
@@ -14,7 +13,6 @@ rootRouter.get('/', (req, res) => {
     res.sendStatus(200);
 });
 
-rootRouter.use('/users', UserController);
 rootRouter.use('/auth', AuthController);
 rootRouter.use('/notes', NotesController);
 

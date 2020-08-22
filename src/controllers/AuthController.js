@@ -8,12 +8,26 @@ import AuthService from '../services/AuthService';
 import authenticate from '../middlewares/authenticate';
 
 import Config from '../Config';
+import UserModel from '../models/User.model';
 
 class HelperFunctions {
     static passwordIsValid = async (password, hash) => bcrypt.compare(password, hash);
 }
 
 const router = express.Router();
+
+router.post('/signup', async (req, res) => {
+    const newUser = UserModel.build(req.body);
+    try {
+        await newUser.validate();
+        await newUser.save();
+    } catch (err) {
+        console.error(err.stack);
+        return res.status(400).send(err.message);
+    }
+
+    return res.sendStatus(200);
+});
 
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
