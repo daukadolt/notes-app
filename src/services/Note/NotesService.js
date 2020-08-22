@@ -1,4 +1,5 @@
 import Note from '../../models/Note/Note.model';
+import SharedID from '../../models/Note/SharedID.model';
 
 class NonexistentNoteError extends Error {}
 
@@ -19,12 +20,15 @@ const getAllNoteIdsByAuthor = async (author) => {
 const getNoteByAuthorAndId = async (author, id) => {
     const { id: UserId } = author;
 
-    return Note.findOne({
+    return (await Note.findOne({
         where: {
             UserId,
             id,
-        }
-    });
+        }, include: [{
+            model: SharedID,
+            attributes: ['id'],
+        }],
+    })).toJSON();
 };
 
 const createNewNote = async (author, text) => {

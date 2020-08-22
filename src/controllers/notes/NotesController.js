@@ -10,6 +10,12 @@ const router = express.Router();
 
 router.use('/shared', SharedNotesController);
 
+class HelperFunctions {
+    static flattenNestedSharedIDs = (SharedIDs) => {
+        return SharedIDs.map(({ id }) => id);
+    };
+}
+
 router.get('/', getUserByToken, async (req, res) => {
     const notes = await NotesService.getAllNoteIdsByAuthor(req.user);
     res.json(notes);
@@ -27,6 +33,8 @@ router.get('/:id', getUserByToken, async (req, res) => {
     if (!note) {
         return res.sendStatus(403);
     }
+
+    note.SharedIDs = HelperFunctions.flattenNestedSharedIDs(note.SharedIDs);
 
     res.json(note);
 });
