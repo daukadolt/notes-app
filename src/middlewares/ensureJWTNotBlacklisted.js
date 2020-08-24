@@ -1,4 +1,5 @@
-import redisConnection from '../db/Redis';
+import AuthService from '../services/AuthService';
+
 
 export default async (req, res, next) => {
     const bearerHeader = req.headers.authorization;
@@ -15,9 +16,18 @@ export default async (req, res, next) => {
         return;
     }
 
-    const redisRecord = await redisConnection.get(bearerToken);
+    let isBlacklisted;
 
-    if (redisRecord) {
+    try {
+        isBlacklisted = await AuthService.jwtBlacklisted(bearerToken);
+    } catch (err) {
+        // TODO: custom errors
+        console.error(err.stack);
+        res.sendStatus(403);
+        return;
+    }
+
+    if (isBlacklisted) {
         res.sendStatus(403);
         return;
     }

@@ -1,6 +1,6 @@
 version: '3'
 services:
-  redis:
+  blacklisted-jwts-redis:
     image: redis:alpine
     container_name: note-app-blacklisted-jwts-redis
     ports:

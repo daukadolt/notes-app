@@ -68,4 +68,16 @@ router.post('/logout', authenticate, async (req, res) => {
     res.sendStatus(200);
 });
 
+router.post('/logout-all', authenticate, async (req, res) => {
+    try {
+        await AuthService.logoutAllJWTs(req.jwtToken);
+    } catch (err) {
+        console.error(err.stack);
+        res.status(500).send(err.message);
+        return;
+    }
+
+    res.sendStatus(200);
+});
+
 export default router;

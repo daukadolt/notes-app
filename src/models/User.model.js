@@ -24,6 +24,11 @@ export const init = (sequelize) => {
             allowNull: false,
             type: DataTypes.CHAR(60),
         },
+        jwtValidFrom: {
+            allowNull: false,
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
+        },
     }, { sequelize });
 
     User.addHook('beforeCreate', async (user) => {
