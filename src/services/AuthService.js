@@ -18,6 +18,7 @@ const jwtBlacklisted = async (token) => {
     }
 
     const jwtValidFrom = new Date(user.jwtValidFrom);
+    jwtValidFrom.setMilliseconds(0);
 
     if (issuedDate < jwtValidFrom) {
         return true;
