@@ -1,6 +1,5 @@
 import AuthService from '../services/AuthService';
 
-
 export default async (req, res, next) => {
     const bearerHeader = req.headers.authorization;
 
