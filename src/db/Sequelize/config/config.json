@@ -9,8 +9,9 @@
   "test": {
     "username": "postgres",
     "password": "supersecret",
-    "database": "database_test",
+    "database": "test-database",
     "host": "127.0.0.1",
+    "port": "5433",
     "dialect": "postgres"
   },
   "production": {

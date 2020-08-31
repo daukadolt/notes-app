@@ -3,21 +3,23 @@
 import request from 'supertest';
 
 import app from '../../../App';
-import sequelize from '../../../db/Sequelize';
-import initModels from '../../../models/init';
-import UserModel from '../../../models/User.model';
+import db from '../../../db/Sequelize';
+
+const sequelize = db.sequelize;
+
+const UserModel = db.User;
 
 describe('authController tests', () => {
     beforeAll(async () => {
         await sequelize.authenticate();
-        await initModels(sequelize);
     });
 
     afterAll(async () => {
-        await UserModel.destroy({
+        const test = await UserModel.destroy({
             where: {},
             truncate: true,
         });
+        console.log('destroy', test);
         await sequelize.close();
     });
 

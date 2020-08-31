@@ -7,7 +7,11 @@
     "start": "node dist/Server.js",
     "build": "babel src -d dist --copy-files",
     "lint": "eslint 'src/**/*.js'",
-    "test": "jest src/** --runInBand --forceExit"
+    "migrate": "sequelize-cli db:migrate",
+    "undo-migrate": "sequelize-cli db:migrate:undo:all",
+    "pretest": "NODE_ENV=test npm run migrate",
+    "test": "jest src/** --runInBand --forceExit; echo tests finished",
+    "posttest": "NODE_ENV=test npm run undo-migrate"
   },
   "author": "",
   "license": "ISC",

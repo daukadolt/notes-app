@@ -3,10 +3,12 @@
 import request from 'supertest';
 
 import app from '../../../../App';
-import sequelize from '../../../../db/Sequelize';
-import initModels from '../../../../models/init';
-import UserModel from '../../../../models/User.model';
-import NoteModel from '../../../../models/Note/Note.model';
+import db from '../../../../db/Sequelize';
+
+const sequelize = db.sequelize;
+
+const UserModel = db.User;
+const NoteModel = db.Note;
 
 describe('NotesController tests', () => {
     const user = {
@@ -18,7 +20,6 @@ describe('NotesController tests', () => {
 
     beforeAll(async () => {
         await sequelize.authenticate();
-        await initModels(sequelize);
 
         const signupResponse = await request(app)
             .post('/api/auth/signup')
