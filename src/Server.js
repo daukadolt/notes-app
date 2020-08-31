@@ -1,13 +1,11 @@
 import app from './App';
 import Config from './Config';
 
-import sequelize from './db/Sequelize';
-import initModels from './models/init';
+import db from './db/Sequelize';
 
 const start = async () => {
     try {
-        await sequelize.authenticate();
-        await initModels(sequelize);
+        await db.sequelize.authenticate();
         app.listen(Config.EXPRESS_PORT, () => {
             console.log(`App running on http://localhost:${Config.EXPRESS_PORT}`);
         });

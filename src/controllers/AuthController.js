@@ -43,6 +43,7 @@ router.post('/login', async (req, res) => {
     const passwordValid = await HelperFunctions.passwordIsValid(password, user.getDataValue('password'));
 
     if (!passwordValid) {
+        console.log('invalid password!');
         res.sendStatus(400);
         return;
     }

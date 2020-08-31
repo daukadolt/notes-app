@@ -1,9 +1,11 @@
 import jwt from 'jsonwebtoken';
 
 import blacklistRedis from '../db/Redis';
+import db from '../db/Sequelize';
+
 import utils from '../utils';
 
-import User from '../models/User.model';
+const User = db.User;
 
 const jwtBlacklisted = async (token) => {
     const { iat, username } = jwt.decode(token);

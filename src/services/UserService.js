@@ -1,4 +1,6 @@
-import User from '../models/User.model';
+import db from '../db/Sequelize';
+
+const User = db.User;
 
 const createNewUser = async ({ username, password }) => {
     const newUser = User.build({ username, password });

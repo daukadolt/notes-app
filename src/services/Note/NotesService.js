@@ -1,5 +1,7 @@
-import Note from '../../models/Note/Note.model';
-import SharedID from '../../models/Note/SharedID.model';
+import db from '../../db/Sequelize';
+
+const Note = db.Note;
+const SharedID = db.SharedID;
 
 class NonexistentNoteError extends Error {}
 

@@ -5,9 +5,17 @@ services:
     container_name: note-app-blacklisted-jwts-redis
     ports:
     - '127.0.0.1:6379:6379'
-  postgres:
+  test-postgres:
     image: postgres:alpine
-    container_name: note-app-postgres
+    container_name: note-app-postgres-test
+    environment:
+      POSTGRES_PASSWORD: 'supersecret'
+      POSTGRES_DB: 'test-database'
+    ports:
+    - '127.0.0.1:5433:5432'
+  dev-postgres:
+    image: postgres:alpine
+    container_name: note-app-postgres-dev
     environment:
       POSTGRES_PASSWORD: 'supersecret'
       POSTGRES_DB: 'notes-app'
